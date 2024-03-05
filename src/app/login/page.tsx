@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -16,8 +17,10 @@ export default function LoginPage() {
         try {
             setLoading(true);
             const response = await axios.post("/api/users/login", user);
-            console.log("Login Success", response.data);
-            router.push("/profile");
+            toast.success(response.data.message);
+            setTimeout(()=>{
+                router.push("/profile");
+            },2800)
         } catch (error : any) {
             console.log("Login Failed", error.message);
         }
@@ -34,6 +37,10 @@ export default function LoginPage() {
     },[user])
     return (
         <div className='flex flex-col items-center justify-center min-h-screen py-2'>
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
             <h1>{loading ? "Processing" : "Login"}</h1>
             <hr/>
             <label htmlFor='email'>Email</label>
