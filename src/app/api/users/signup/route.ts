@@ -23,6 +23,7 @@ export async function POST(request: NextRequest) {
         const savedUser = await newUser.save();
         return NextResponse.json({message:"User Created Successfully",success : true,savedUser});
     } catch (error: any) {
-         return NextResponse.json({error : error.message},{status : 500})   
+        console.error(error); // Log the error object
+        return NextResponse.json({ error: error.message || 'An unknown error occurred', status: 500 });
     }
 }
